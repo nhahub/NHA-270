@@ -11,6 +11,8 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+# ignore generated plugin registrant
+android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
 
 # IntelliJ related
 *.iml
