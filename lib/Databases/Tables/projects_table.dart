@@ -6,6 +6,7 @@ class SavedProjectsTable {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     userEmail TEXT NOT NULL,
     title TEXT NOT NULL,
+    prompt TEXT NOT NULL,
     image TEXT NOT NULL,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userEmail) REFERENCES users(email)

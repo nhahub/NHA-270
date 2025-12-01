@@ -11,7 +11,6 @@ class DesignsCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        // splashColor: Color(0xFFFF08FF),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context)=>Designdetails(image: image,description: description,)));
         },
@@ -60,7 +59,9 @@ class DesignsCard extends StatelessWidget {
         ),
       ),
 
-            ],
+
+
+          ],
           ),
         ),
       ),

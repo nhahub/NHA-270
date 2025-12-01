@@ -15,33 +15,29 @@ class Result extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          flex: 3,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Message(msg: msgPrompt),
-              ),
-              Center(
-                child: Image.memory(
-                  imageBytes,          // ✅ مش asset ولا network
-                  width: 350,
-                  height: 350,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Message(msg: msgPrompt),
           ),
-        ),
-        Expanded(
-          flex: 1,
-          child: SaveButton(),
-        )
-      ],
+          Center(
+            child: Image.memory(
+              imageBytes,          // ✅ مش asset ولا network
+              width: 350,
+              height: 350,
+              fit: BoxFit.contain,
+            ),
+          ),
+          const SizedBox(height: 100),
+          SaveButton(
+            imageBytes: imageBytes,
+            prompt: msgPrompt,
+          )
+        ],
+      ),
     );
   }
 }

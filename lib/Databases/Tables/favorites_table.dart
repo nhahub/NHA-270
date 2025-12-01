@@ -8,7 +8,8 @@ class FavoritesTable {
     designImage TEXT NOT NULL,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userEmail) REFERENCES users(email),
-    FOREIGN KEY (designImage) REFERENCES designs(image)
+    FOREIGN KEY (designImage) REFERENCES designs(image),
+    UNIQUE(userEmail, designImage)
   )
   ''';
 }

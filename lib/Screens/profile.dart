@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Components/pop_up_logout.dart';
+import '../Repositories/user_repository.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
+   Profile({super.key});
+
+  final repo = UserRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +25,19 @@ class Profile extends StatelessWidget {
         ),
         centerTitle: true,
         leading: BackButton(color: Color(0xFF7F167F)),
+        actions: [
+          IconButton(
+            onPressed: () =>showDialog(context: context, builder: (contex) =>PopUpLogout()),
+            icon: Icon(Icons.logout, color: Color(0xFF7F167F))
+            )
+        ]
       ),
       body: Profile_Body(context),
     );
   }
 }
+
+
 
 Widget Profile_Body(BuildContext context) {
   return Column(
@@ -36,7 +50,7 @@ Widget Profile_Body(BuildContext context) {
             Center(
               child: CircleAvatar(
                 radius: 100,
-                backgroundImage: AssetImage("assets/images/profile.png"),
+                backgroundImage: AssetImage("assets/images/User_Profile.png"),
               ),
             ),
             Positioned(
@@ -73,3 +87,4 @@ Widget Profile_Body(BuildContext context) {
     ],
   );
 }
+

@@ -5,7 +5,7 @@ class DesignTable {
   CREATE TABLE $tableName(
     image TEXT NOT NULL,
     description TEXT NOT NULL,
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT
   )
   ''';
 }

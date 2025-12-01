@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Repositories/favorite_repository.dart';
 
 class Designdetails extends StatefulWidget {
   final String image;
@@ -15,6 +19,39 @@ class Designdetails extends StatefulWidget {
 }
 class _DesigndetailsState extends State<Designdetails> {
   bool isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    checkIfFavorite();
+  }
+
+  Future<void> checkIfFavorite() async {
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('userEmail');
+    if (email == null) return;
+    final favRepo = context.read<FavoriteRepository>();
+    final exists = await favRepo.isFavorite(email, widget.image);
+    setState(() {
+      isFavorite = exists;
+    });
+  }
+
+  Future<void> toggleFavorite() async {
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('userEmail');
+    if (email == null) return;
+    final favRepo = context.read<FavoriteRepository>();
+    if (isFavorite) {
+      await favRepo.removeFavorite(email, widget.image);
+    } else {
+      await favRepo.addFavorite(email, widget.image);
+    }
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,11 +131,7 @@ class _DesigndetailsState extends State<Designdetails> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isFavorite = !isFavorite;
-                        });
-                      },
+                      onPressed: toggleFavorite,
                       icon: Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
                         size: 32,

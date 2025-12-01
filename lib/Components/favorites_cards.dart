@@ -5,7 +5,8 @@ import '../Screens/designDetails.dart';
 class FavoritesCards extends StatelessWidget {
   final String image;
   final String description;
-  const FavoritesCards({super.key, required this.image, required this.description});
+  final VoidCallback? onDismiss;
+  const FavoritesCards({super.key, required this.image, required this.description, this.onDismiss});
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +14,17 @@ class FavoritesCards extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        // splashColor: Color(0xFFFF08FF),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context)=>Designdetails(image: image,description: description,)));
         },
         child: Dismissible(
           direction: DismissDirection.endToStart,
           key: ValueKey(image),
+          onDismissed: (_){
+            if(onDismiss != null){
+              onDismiss!();
+            }
+          },
           child: Container(
             width: 100,
             height: 112,

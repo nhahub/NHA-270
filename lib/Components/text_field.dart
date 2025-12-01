@@ -10,8 +10,8 @@ class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     required this.label,
-    this.obscureText = false,
     required this.controller,
+    this.obscureText = false,  //عشان نشوف هل هنحط الزرار نفسه ولالا
     this.borderColor = const Color(0xFF7F167F),
     this.labelFontSize = 18,
   });
@@ -21,57 +21,49 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  late bool _obscure;
+  late bool obscure; //للايكون نفسها عشان نعملها set state وتخفي الباسوورد ولا يظهر
 
   @override
   void initState() {
     super.initState();
-    _obscure = widget.obscureText;
+    obscure = widget.obscureText;
+    //لو كان الزرار ظاهر ب true يعني الباسوورد هيكون مخفي
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 28,right: 35),
-      child: TextField(
-        controller: widget.controller,
-        obscureText: _obscure,
-        decoration: InputDecoration(
-          labelText: widget.label,
-          floatingLabelBehavior: FloatingLabelBehavior.auto,
-          contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+    return TextField(
+      controller: widget.controller,
+      obscureText: obscure,
+      decoration: InputDecoration(
+        labelText: widget.label,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        labelStyle: TextStyle(
+          fontSize: 14,
+          color: widget.borderColor,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: widget.borderColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: widget.borderColor),
 
-          labelStyle: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
+        ),
+        suffixIcon: widget.obscureText ?
+        IconButton(
+          icon: Icon(
+            obscure ? Icons.visibility_off : Icons.visibility,
             color: widget.borderColor,
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: widget.borderColor,width: 1),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: widget.borderColor),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: widget.borderColor, width: 1),
-          ),
-          suffixIcon: widget.obscureText
-              ? IconButton(
-            icon: Icon(
-              _obscure ? Icons.visibility_off : Icons.visibility,
-              color: widget.borderColor,
-            ),
-            onPressed: () {
-              setState(() {
-                _obscure = !_obscure;
-              });
-            },
-          )
-              : null,
-        ),
+          onPressed: () {
+            setState(() {
+              obscure = !obscure;
+            });
+          },
+        )
+            : null,
       ),
     );
   }
