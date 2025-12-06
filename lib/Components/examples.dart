@@ -7,7 +7,10 @@ List<String> examples = [
 ];
 
 class Examples extends StatelessWidget {
-  const Examples({super.key});
+  TextEditingController controller = TextEditingController();
+   Examples({super.key, required this.controller});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,10 @@ class Examples extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                  controller.text = "${controller.text} ${examples[index]}";
+
+              },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

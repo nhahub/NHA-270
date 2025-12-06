@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../Bloc/floorplan_bloc.dart';
-import '../Bloc/floorplan_event.dart';
+import '../Bloc/floorplan/floorplan_bloc.dart';
+import '../Bloc/floorplan/floorplan_event.dart';
 import 'message.dart';
 
 class ErrorView extends StatelessWidget {

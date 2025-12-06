@@ -5,7 +5,8 @@ class UserTable {
   CREATE TABLE $tableName(
     email TEXT PRIMARY KEY,
     name TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    profileImage TEXT
   )
   ''';
 }

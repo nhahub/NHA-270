@@ -1,13 +1,17 @@
 import 'package:depi_project/Repositories/user_repository.dart';
 import 'package:depi_project/Screens/Splash/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'Bloc/user/user_bloc.dart';
+import 'Bloc/user/user_event.dart';
 import 'Providers/theme_provider.dart';
 import 'Repositories/design_repository.dart';
 import 'Repositories/favorite_repository.dart';
 import 'Repositories/saved_projects_repository.dart';
 import 'Screens/Splash/splash_screen_first.dart';
+import 'Screens/editProfile.dart';
 import 'Screens/favorites.dart';
 import 'Screens/customize.dart';
 import 'Screens/home.dart';
@@ -37,8 +41,17 @@ Future<void> main() async {
       Provider<FavoriteRepository>(create: (_) => FavoriteRepository()),
       Provider<SavedProjectRepository>(create: (_) => SavedProjectRepository()),
       Provider<UserRepository>(create: (_) => UserRepository()),
-  ],child: MyApp(isLoggedIn: isLoggedIn,)
-  ));
+  ],child: BlocProvider(
+        create: (_) {
+          final repo = UserRepository();
+          final bloc = UserBloc(repo);
+          bloc.add(LoadUserEvent()); // 👈 أول ما الأبلكيشن يفتح يجيب بيانات اليوزر
+          return bloc;
+        },
+        child: MyApp(isLoggedIn: isLoggedIn),
+      ),
+      ),
+  );
 
 }
 class MyApp extends StatelessWidget {

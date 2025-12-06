@@ -6,6 +6,8 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final Color borderColor;
   final double labelFontSize;
+  final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
 
   const CustomTextField({
     super.key,
@@ -14,6 +16,8 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,  //عشان نشوف هل هنحط الزرار نفسه ولالا
     this.borderColor = const Color(0xFF7F167F),
     this.labelFontSize = 18,
+    this.validator,
+    this.keyboardType,
   });
 
   @override
@@ -32,7 +36,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: widget.validator,
       controller: widget.controller,
       obscureText: obscure,
       decoration: InputDecoration(

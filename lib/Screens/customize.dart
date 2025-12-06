@@ -2,11 +2,11 @@ import 'package:depi_project/Repositories/floorplan_repository.dart';
 import 'package:depi_project/Screens/aiResult.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../Bloc/floorplan_bloc.dart';
-import '../Bloc/floorplan_event.dart';
+import '../Bloc/floorplan/floorplan_bloc.dart';
+import '../Bloc/floorplan/floorplan_event.dart';
 import '../Components/examples.dart';
 import '../Components/prompt_text_field.dart';
-import '../Components/suggestions.dart';
+import '../Components/keywords.dart';
 
 class Customize extends StatefulWidget {
    Customize({super.key});
@@ -82,14 +82,14 @@ class _CustomizeState extends State<Customize> {
                     ],
                 ),
                 SizedBox(height: 24,),
-                Text("Suggestions",
+                Text("Keywords",
                     style: TextStyle(
                     color: Color(0xFF9700A3),
                     fontSize: 16,
                     fontWeight: FontWeight.bold
           )),
                 SizedBox(height: 10,),
-                Suggestions(),
+                Suggestions(controller: promptController,),
                 Text("Examples",
                     style: TextStyle(
                   color: Color(0xFF163D7C),
@@ -98,7 +98,7 @@ class _CustomizeState extends State<Customize> {
                 )
                 ),
                 SizedBox(height: 10,),
-                Examples()
+                Examples(controller: promptController)
 
 
               ],

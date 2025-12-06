@@ -39,6 +39,47 @@ class UserRepository {
     );
     return result.isNotEmpty;
   }
+
+
+  Future<User?> getUserByEmail(String email) async {
+    final database = await db;
+    final result = await database.query(
+      UserTable.tableName,
+      where: 'email = ?',
+      whereArgs: [email],
+      limit: 1,
+    );
+    if (result.isNotEmpty) {
+      return User.fromMap(result.first);
+    }
+    return null;
+  }
+
+
+  Future<int> updateUser({
+    required String email,
+    String? name,
+    String? profileImage,
+  }) async {
+    final database = await db;
+
+    final Map<String, dynamic> dataToUpdate = {};
+    if (name != null) dataToUpdate['name'] = name;
+    if (profileImage != null) {
+      dataToUpdate['profileImage'] = profileImage;
+    }
+
+    if (dataToUpdate.isEmpty) return 0;
+
+    return await database.update(
+      UserTable.tableName,
+      dataToUpdate,
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+  }
+
+
 }
 
 // Future <String> getUserNameByEmail(String email) async {

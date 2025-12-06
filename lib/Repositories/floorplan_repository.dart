@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
 class FloorplanRepository {
-  static const String _baseUrl = "http://192.168.1.8:8000"; // IP جهازك
+  static const String _baseUrl = "http://192.168.1.5:8000"; // IP جهازك
 
   Future<Uint8List> generateFloorplan(String prompt) async {
     final url = Uri.parse("$_baseUrl/generate-floorplan/");
