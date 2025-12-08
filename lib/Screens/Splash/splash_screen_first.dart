@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../Components/custom_button.dart';
+import '../login_screen.dart';
+import '../signUp_screen.dart';
 
 class SplashScreenFirst extends StatefulWidget {
   const SplashScreenFirst({super.key});
@@ -57,7 +59,8 @@ class _SplashScreen1State extends State<SplashScreenFirst> {
                 CustomButton(
                   text: "Log in",
                   onPressed: () {
-                    Navigator.pushNamed(context, "Log in");
+                    Navigator.pushReplacementNamed(context,"Log in"
+                   );
                   },
                   opacity: 0.32,
                 ),
@@ -65,7 +68,9 @@ class _SplashScreen1State extends State<SplashScreenFirst> {
                 CustomButton(
                   text: "Sign up",
                   onPressed: () {
-                    Navigator.pushNamed(context, "Sign up");
+                    Navigator.pushReplacementNamed(context,"Sign up"
+
+                    );
                   },
 
                 ),

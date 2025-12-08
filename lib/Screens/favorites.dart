@@ -5,21 +5,6 @@ import '../Components/favorites_cards.dart';
 import '../Models/designs.dart';
 import '../Repositories/favorite_repository.dart';
 
-// Map<String, String> favorites = {
-//   "assets/images/design1.png":
-//       "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
-//   "assets/images/design2.png":
-//       "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
-//   "assets/images/design3.png":
-//       "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
-//   "assets/images/design4.png":
-//       "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
-//   "assets/images/design5.png":
-//       "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
-//   "assets/images/design6.png":
-//       "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
-// };
-
 class Favorites extends StatefulWidget {
   Favorites({super.key});
 
@@ -41,17 +26,18 @@ class _FavoritesState extends State<Favorites> {
     final prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('userEmail');
     if (!mounted) return;
+
     if (email == null) {
       setState(() {
         favoritesFuture = Future.value([]);
       });
       return;
     }
+
     final favRepo = context.read<FavoriteRepository>();
     setState(() {
-      favoritesFuture = favRepo.getFavoritesForUser(email); // مش كل الفيفوريتس
+      favoritesFuture = favRepo.getFavoritesForUser(email);
     });
-
   }
 
   Future<void> removeFromFavorites(String designImage) async {
@@ -68,72 +54,74 @@ class _FavoritesState extends State<Favorites> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFFFDDF2),
-      appBar: AppBar(
-        backgroundColor: Color(0xFFFFDDF2),
-        title: Text("Favorites",
-            style: TextStyle(
-                color: Color(0xFF7F167F),
-                fontWeight: FontWeight.bold,
-                fontSize: 20
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
-            )),
+    return Scaffold(
+      // كان: Color(0xFFFFDDF2)
+      backgroundColor: colorScheme.background,
+      appBar: AppBar(
+        // كان: Color(0xFFFFDDF2)
+        backgroundColor: colorScheme.surface,
+        elevation: 0,
+        title: Text(
+          "Favorites",
+          style: textTheme.titleLarge?.copyWith(
+            // كان: Color(0xFF7F167F)
+            color: colorScheme.primary,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
         centerTitle: true,
-        leading: BackButton(color: Color(0xFF7F167F)),
+        leading: BackButton(
+          // كان: Color(0xFF7F167F)
+          color: colorScheme.primary,
+        ),
       ),
-      body: ListViewFavorires(),
+      body: _listViewFavorites(context, colorScheme, textTheme),
     );
   }
 
-
-
-
-
-
-
-
-  Widget ListViewFavorires() {
+  Widget _listViewFavorites(
+      BuildContext context, ColorScheme colorScheme, TextTheme textTheme) {
     return FutureBuilder<List<Design>>(
-        future: favoritesFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
-              child: Text(
-                "No favorites yet",
-                style: TextStyle(
-                  color: Color(0xFF7F167F),
-                  fontSize: 16,
-                ),
-              ),
-            );
-          }
-          final favorites = snapshot.data!;
-          return ListView.builder(
-            itemCount: favorites.length,
-            itemBuilder: (context, index) {
-              return FavoritesCards(
-                image: favorites[index].image,
-                description: favorites[index].description,
-                onDismiss: () => removeFromFavorites(favorites[index].image),
-              );
-            },
+      future: favoritesFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(colorScheme.primary),
+            ),
           );
         }
 
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              "No favorites yet",
+              style: textTheme.bodyMedium?.copyWith(
+                // كان: Color(0xFF7F167F)
+                color: colorScheme.onBackground.withOpacity(0.7),
+                fontSize: 16,
+              ),
+            ),
+          );
+        }
+
+        final favorites = snapshot.data!;
+        return ListView.builder(
+          itemCount: favorites.length,
+          itemBuilder: (context, index) {
+            return FavoritesCards(
+              image: favorites[index].image,
+              description: favorites[index].description,
+              onDismiss: () => removeFromFavorites(favorites[index].image),
+            );
+          },
+        );
+      },
     );
   }
-
 }
-
-
-
-
-
-
-
-
 

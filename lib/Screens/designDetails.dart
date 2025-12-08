@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Components/zoom_image.dart';
 import '../Repositories/favorite_repository.dart';
 
 class Designdetails extends StatefulWidget {
@@ -17,13 +21,13 @@ class Designdetails extends StatefulWidget {
   @override
   State<Designdetails> createState() => _DesigndetailsState();
 }
+
 class _DesigndetailsState extends State<Designdetails> {
   bool isFavorite = false;
 
   @override
   void initState() {
     super.initState();
-
     checkIfFavorite();
   }
 
@@ -55,90 +59,139 @@ class _DesigndetailsState extends State<Designdetails> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      backgroundColor: Color(0xFFFFDDF2),
+      // كان: Color(0xFFFFDDF2)
+      backgroundColor: colorScheme.background,
+
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFDDF2),
+        // كان: Color(0xFFFFDDF2)
+        backgroundColor: colorScheme.surface,
+        elevation: 0,
         title: Text(
           "Design Details",
-          style: TextStyle(
-            color: Color(0xFF9700A3),
+          style: textTheme.titleLarge?.copyWith(
+            // كان: Color(0xFF9700A3)
+            color: colorScheme.primary,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
         centerTitle: true,
-        leading: BackButton(color: Color(0xFF9700A3)),
+        leading: BackButton(
+          // كان: Color(0xFF9700A3)
+          color: colorScheme.primary,
+        ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.more_vert, color: Color(0xFF9700A3)),
+            icon: Icon(
+              Icons.more_vert,
+              // كان: Color(0xFF9700A3)
+              color: colorScheme.primary,
+            ),
           ),
         ],
       ),
+
       body: Stack(
         children: [
+          // الهيدر اللي ورا بالصورة / الجradient
           Container(
+            height: 250,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                Color(0xFFFF08FF).withOpacity(0.26),
-                Color(0xFFFF08FF).withOpacity(0.36),
-              ]),
-
+                end: Alignment.bottomCenter,
+                colors: [
+                  // كان: Color(0xFFFF08FF).withOpacity(0.26),
+                  //      Color(0xFFFF08FF).withOpacity(0.36),
+                  colorScheme.primary.withOpacity(0.18),
+                  colorScheme.secondary.withOpacity(0.30),
+                ],
+              ),
             ),
-            height: 250,
           ),
+
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
               children: [
                 Hero(
                   tag: widget.image,
-                  child: Image.asset(
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        animationStyle: AnimationStyle(
+                          curve: Curves.easeIn,
+                          duration: const Duration(milliseconds: 200),
+                        ),
+                        useRootNavigator: true,
+                        barrierColor: Colors.black.withOpacity(0.85),
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (_) => ZoomImage(
+                          image: AssetImage(widget.image),
+                        ),
+                      );
+                    },
+                    child: Image.asset(
                       widget.image,
                       width: 400,
                       height: 400,
-                      fit: BoxFit.fill
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Description text
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Description",
-                                style: TextStyle(
-                                    color: Color(0xFF9700A3),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500
-                                )
+                            Text(
+                              "Description",
+                              style: textTheme.titleMedium?.copyWith(
+                                // كان: Color(0xFF9700A3)
+                                color: colorScheme.primary,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                            SizedBox(height: 16,),
+                            const SizedBox(height: 16),
                             SizedBox(
-                                width: 300,
-                                child: Text(widget.description)
+                              width: 300,
+                              child: Text(
+                                widget.description,
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: colorScheme.onBackground,
+                                ),
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ),
+
+                    // Favorite icon
                     IconButton(
                       onPressed: toggleFavorite,
                       icon: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
                         size: 32,
-                        color: const Color(0xFF9700A3),
+                        // كان: Color(0xFF9700A3)
+                        color: colorScheme.primary,
                       ),
-                    )
-
+                    ),
                   ],
                 ),
               ],

@@ -1,11 +1,14 @@
 import 'package:depi_project/Repositories/user_repository.dart';
 import 'package:depi_project/Screens/Splash/splash_screen.dart';
+import 'package:depi_project/Screens/emailAuth.dart';
+import 'package:depi_project/Screens/terms_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Bloc/user/user_bloc.dart';
 import 'Bloc/user/user_event.dart';
+import 'Colors/colors.dart';
 import 'Providers/theme_provider.dart';
 import 'Repositories/design_repository.dart';
 import 'Repositories/favorite_repository.dart';
@@ -17,6 +20,7 @@ import 'Screens/customize.dart';
 import 'Screens/home.dart';
 import 'Screens/login_screen.dart';
 import 'Screens/profile.dart';
+import 'Screens/reset_password.dart';
 import 'Screens/savedProjects.dart';
 import 'Screens/signUp_screen.dart';
 import 'Seed/seed_designs.dart';
@@ -63,7 +67,15 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context); // أو context.watch<ThemeProvider>()
     return MaterialApp(
       darkTheme: ThemeData.dark(),
-      theme: ThemeData.light(),
+      theme:ThemeData(
+          useMaterial3: true,
+          colorScheme: HueColorScheme,
+          scaffoldBackgroundColor: HueColorScheme.background,
+          appBarTheme: AppBarTheme(
+            backgroundColor: HueColorScheme.primary,
+            foregroundColor: HueColorScheme.onPrimary,
+            elevation: 0,
+          )),
       themeMode: themeProvider.currentTheme,
       debugShowCheckedModeBanner: false,
       routes: {
@@ -75,8 +87,12 @@ class MyApp extends StatelessWidget {
         "Log in": (context) => LoginScreen(),
         "Sign up": (context) => SignupScreen(),
         "First Splash": (context) => SplashScreenFirst(),
+        "EmailAuth": (context) =>EmailAuth(),
+        "Terms": (context) =>TermsConditions()
       },
+
       home: isLoggedIn ? const SplashScreen() : const SplashScreenFirst(),
     );
   }
 }
+

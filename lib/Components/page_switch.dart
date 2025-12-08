@@ -26,47 +26,55 @@ class _TopSegmentedSwitchState extends State<TopSegmentedSwitch> {
   void _setIndex(int i) {
     if (_index == i) return;
     setState(() => _index = i);
-    widget.onChanged?.call(i); // ✅ ابعتي i مش _index عشان مفيهاش لغبطة
+    widget.onChanged?.call(i);
   }
-
 
   @override
   Widget build(BuildContext context) {
     const double height = 50;
 
+    // 🟣 نجيب الألوان من الثيم بدل ما نسبّت HEX
+    final colorScheme = Theme.of(context).colorScheme;
+
     return SizedBox(
       height: height,
-      child: Stack( //عملنا stack عشان هنحط كذا حاجة جواه زي row فيه ال text و container الي هيتحرك (الزرار) يمين وشمال فكدا فيه كذا حاجة فوق بعض
+      child: Stack(
         children: [
-
+          // الـ Track اللي ورا
           Padding(
-            padding: const EdgeInsets.only(left: 10,right: 10),
+            padding: const EdgeInsets.only(left: 10, right: 10),
             child: Container(
               decoration: BoxDecoration(
-                color: Color(0xFFFF08FF).withOpacity(0.26),
+                // كان: Color(0xFFFF08FF).withOpacity(0.26),
+                color: colorScheme.primary.withOpacity(0.14),
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
           ),
 
+          // الزرار المتحرك (اللي بيغير بين Customize / Design)
           AnimatedAlign(
             duration: const Duration(milliseconds: 220),
             curve: Curves.easeOut,
             alignment:
             _index == 0 ? Alignment.centerLeft : Alignment.centerRight,
             child: Padding(
-              padding: const EdgeInsets.only(top: 6.0,bottom: 6,left: 20,right: 20),
-              child: FractionallySizedBox(                //عشان الزرار الي بيتحرك ياخد نص ال parent الي جواه لما يعمل switch
-              widthFactor: 0.5,
+              padding: const EdgeInsets.only(
+                  top: 6.0, bottom: 6, left: 20, right: 20),
+              child: FractionallySizedBox(
+                widthFactor:
+                0.5, // عشان ياخد نص العرض تقريبًا (segment لكل اختيار)
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: const Color(0xFF9700A3),
-                    boxShadow: const [
+                    // كان: Color(0xFF9700A3),
+                    color: colorScheme.primary,
+                    boxShadow: [
                       BoxShadow(
                         blurRadius: 8,
-                        offset: Offset(0, 4),
-                        color: Colors.black26,
+                        offset: const Offset(0, 4),
+                        // كان: Colors.black26
+                        color: colorScheme.shadow.withOpacity(0.25),
                       ),
                     ],
                   ),
@@ -75,6 +83,7 @@ class _TopSegmentedSwitchState extends State<TopSegmentedSwitch> {
             ),
           ),
 
+          // النصوص + الـ InkWell
           Row(
             children: [
               // Customize
@@ -89,8 +98,10 @@ class _TopSegmentedSwitchState extends State<TopSegmentedSwitch> {
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: _index == 0
-                            ? Colors.white
-                            : const Color(0xFF9700A3),
+                        // كان: Colors.white
+                            ? colorScheme.onPrimary
+                        // كان: Color(0xFF9700A3)
+                            : colorScheme.primary,
                       ),
                     ),
                   ),
@@ -109,8 +120,8 @@ class _TopSegmentedSwitchState extends State<TopSegmentedSwitch> {
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: _index == 1
-                            ? Colors.white
-                            : const Color(0xFF9700A3),
+                            ? colorScheme.onPrimary
+                            : colorScheme.primary,
                       ),
                     ),
                   ),

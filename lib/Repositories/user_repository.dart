@@ -80,6 +80,21 @@ class UserRepository {
   }
 
 
+  Future<void> updateUserPassword({
+    required String email,
+    required String newPassword,
+  }) async {
+    final database = await db; // حسب اسم getter عندك
+    await database.update(
+      'users',                       // اسم الجدول عندك
+      {'password': newPassword},     // العمود اللي جوه الجدول
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+  }
+
+
+
 }
 
 // Future <String> getUserNameByEmail(String email) async {

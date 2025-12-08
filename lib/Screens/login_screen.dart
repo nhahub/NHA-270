@@ -7,7 +7,7 @@ import '../Components/custom_button.dart';
 import '../Components/text_field.dart';
 import '../Models/user.dart';
 import '../Repositories/user_repository.dart';
-import 'forget_password.dart';
+import 'emailAuth.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  final UserRepository userRepo = UserRepository();
 
   @override
   void dispose() {
@@ -29,23 +30,21 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  final UserRepository userRepo = UserRepository();
-
   Future<void> onLoginSuccess(String userEmail, BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', true);
     await prefs.setString('userEmail', userEmail);
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Login successful')));
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Login successful')),
+    );
 
     Navigator.pushReplacementNamed(context, "Home");
   }
 
   Future<void> login(BuildContext context) async {
-    // ✅ أول حاجة نتحقق من الـ Form
     if (!formKey.currentState!.validate()) {
-      return; // لو فيه error في أي حقل، متكمليش
+      return;
     }
 
     final emailText = email.text.trim();
@@ -65,7 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
+      // ممكن نخليها برضه ماشية على الثيم، رغم إن الصورة مغطية
+      backgroundColor: colorScheme.background,
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -92,7 +96,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: 490,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(80),
-                            color: Colors.white,
+                            // كان: Colors.white
+                            color: colorScheme.surface.withOpacity(0.96),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 18,
+                                offset: const Offset(0, 10),
+                                color:
+                                colorScheme.shadow.withOpacity(0.12),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -102,27 +115,29 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               "Log in",
-                              style: TextStyle(
+                              style: textTheme.titleLarge?.copyWith(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
+                                color: colorScheme.primary,
                               ),
-                            ), //log in
-                            SizedBox(height: 16),
+                            ),
+                            const SizedBox(height: 16),
                             CustomTextField(
                               keyboardType: TextInputType.emailAddress,
-                                label: "Email",
-                                controller: email,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please enter an email";
-                                  }
-                                  if(!value.contains("@") || !value.contains(".")){
-                                    return "Please enter a valid email";
-                                  }
-                                  return null;
+                              label: "Email",
+                              controller: email,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter an email";
                                 }
+                                if (!value.contains("@") ||
+                                    !value.contains(".")) {
+                                  return "Please enter a valid email";
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 24),
                             CustomTextField(
@@ -133,23 +148,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (value == null || value.isEmpty) {
                                   return "Please enter a password";
                                 }
-                                if (value.length < 6 ) {
+                                if (value.length < 6) {
                                   return "Password must be at least 6 characters";
                                 }
-                                if (!value.contains(RegExp('[a-z]'))){
+                                if (!value.contains(RegExp('[a-z]'))) {
                                   return "Password must contain at least one lowercase letter";
                                 }
-                                if (!value.contains(RegExp('[A-Z]'))){
+                                if (!value.contains(RegExp('[A-Z]'))) {
                                   return "Password must contain at least one uppercase letter";
                                 }
-                                if (!value.contains(RegExp('[0-9]'))){
+                                if (!value.contains(RegExp('[0-9]'))) {
                                   return "Password must contain at least one number";
                                 }
-                                if (!value.contains(RegExp('[!@#\$&*~]'))){
+                                if (!value.contains(
+                                    RegExp('[!@#\$&*~]'))) {
                                   return "Password must contain at least one special character";
                                 }
                                 return null;
-                              }
+                              },
                             ),
                             const SizedBox(height: 8),
                             Row(
@@ -160,32 +176,32 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ForgetPassword(),
+                                        builder: (context) => EmailAuth(),
                                       ),
                                     );
                                   },
                                   style: TextButton.styleFrom(
-                                    tapTargetSize: MaterialTapTargetSize
-                                        .shrinkWrap, // optional لتقليل المساحة
+                                    tapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     "Forget Password?",
-                                    style: TextStyle(
-                                      color: Color(0xFF7F167F),
+                                    style: textTheme.bodySmall?.copyWith(
+                                      // كان: Color(0xFF7F167F)
+                                      color: colorScheme.primary,
                                       fontSize: 14,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 24),
+                            const SizedBox(height: 24),
                             CustomButton(
                               text: "Next",
-                              onPressed: () {
-                                login(context);
-                              },
+                              onPressed: () => login(context),
                             ),
-                            SizedBox(height: 24)
+                            const SizedBox(height: 24),
                           ],
                         ),
                       ),
@@ -196,16 +212,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Text(
                         "Don’t have an account?",
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                        style: textTheme.bodySmall?.copyWith(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.pushNamed(context, "Sign up");
                         },
-                        child: const Text(
+                        child: Text(
                           "Sign up",
-                          style: TextStyle(
-                            color: Color(0xFFCB1C8D),
+                          style: textTheme.bodySmall?.copyWith(
+                            // كان: Color(0xFFCB1C8D)
+                            color: colorScheme.tertiary,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
@@ -217,15 +237,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           )
-
-
-        ]
-      )
+        ],
+      ),
     );
   }
 }
-
-
-
-
 

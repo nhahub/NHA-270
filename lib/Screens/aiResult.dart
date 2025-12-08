@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import '../Components/result_body.dart';
 import '../Bloc/floorplan/floorplan_bloc.dart';
 import '../Bloc/floorplan/floorplan_state.dart';
@@ -25,43 +26,69 @@ class AIresult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var image;
+    Uint8List? image;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      backgroundColor: Color(0xFFFFDDF2),
+      // كان: Color(0xFFFFDDF2)
+      backgroundColor: colorScheme.background,
+
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFDDF2),
+        // كان: Color(0xFFFFDDF2)
+        backgroundColor: colorScheme.surface,
+        elevation: 0,
         title: Text(
           "AI Result",
-          style: TextStyle(
-            color: Color(0xFF7F167F),
+          style: textTheme.titleLarge?.copyWith(
+            // كان: Color(0xFF7F167F)
+            color: colorScheme.primary,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
         centerTitle: true,
-        leading: BackButton(color: Color(0xFF7F167F)),
+        leading: BackButton(
+          // كان: Color(0xFF7F167F)
+          color: colorScheme.primary,
+        ),
         actions: [
           PopupMenuButton(
-            icon: Icon(Icons.more_vert,color: Color(0xFF7F167F)),
-            onSelected: (value){
-              if(value=="download") {
-                downloadImage(context,image);
+            icon: Icon(
+              Icons.more_vert,
+              // كان: Color(0xFF7F167F)
+              color: colorScheme.primary,
+            ),
+            onSelected: (value) {
+              if (value == "download" && image != null) {
+                downloadImage(context, image!);
               }
             },
-            itemBuilder: (context) =>[
+            itemBuilder: (context) => [
               PopupMenuItem(
                 value: "download",
                 child: Row(
                   children: [
-                    Icon(Icons.file_download,size: 18, color: Color(0xFF7F167F)),
-                    SizedBox(width: 8,),
-                    Text("Download",style: TextStyle(color: Color(0xFF7F167F))),
+                    Icon(
+                      Icons.file_download,
+                      size: 18,
+                      color: colorScheme.primary,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      "Download",
+                      style: TextStyle(
+                        color: colorScheme.primary,
+                      ),
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
-          )],
+          ),
+        ],
       ),
+
       body: BlocConsumer<FloorplanBloc, FloorplanState>(
         listener: (context, state) {
           if (state is FloorplanFailure) {
@@ -72,8 +99,12 @@ class AIresult extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is FloorplanLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: Lottie.asset(
+                "assets/lotties/Loading animation.json",
+                fit: BoxFit.contain,
+                repeat: true,
+              ),
             );
           } else if (state is FloorplanSuccess) {
             image = state.imageBytes;
@@ -87,18 +118,20 @@ class AIresult extends StatelessWidget {
               errorMessage: state.message,
             );
           }
-          // FloorplanInitial أو أي حالة غريبة
-          return const Center(
-            child: Text("Preparing to generate floorplan..."),
+          // FloorplanInitial أو أي حالة تانية
+          return Center(
+            child: Text(
+              "Preparing to generate floorplan...",
+              style: textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onBackground,
+              ),
+            ),
           );
         },
       ),
     );
   }
 }
-
-
-
 
 
 

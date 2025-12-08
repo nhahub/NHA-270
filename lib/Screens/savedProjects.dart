@@ -5,24 +5,25 @@ import '../Components/project_cards.dart';
 import '../Models/saved_project.dart';
 import '../Repositories/saved_projects_repository.dart';
 
-Map<String, String> projects = {
-  "Project1":
-  "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
-  "Project2":
-  "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
-  "Project3":
-  "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
-  "Project4":
-  "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
-  "Project5":
-  "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
-  "Project6":
-  "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
-  "Project7":
-  "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
-  "Project8":
-  "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
-};
+// الـ Map دي لو مش بتستخدمها خالص تقدر تمسحها
+// Map<String, String> projects = {
+//   "Project1":
+//   "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
+//   "Project2":
+//   "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
+//   "Project3":
+//   "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
+//   "Project4":
+//   "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
+//   "Project5":
+//   "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
+//   "Project6":
+//   "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
+//   "Project7":
+//   "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
+//   "Project8":
+//   "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
+// };
 
 class Savedprojects extends StatefulWidget {
   Savedprojects({super.key});
@@ -47,7 +48,7 @@ class _SavedprojectsState extends State<Savedprojects> {
     final repo = context.read<SavedProjectRepository>();
     return await repo.getProjectsForUser(email);
   }
-  
+
   Future<void> removeProject(int id) async {
     final repo = context.read<SavedProjectRepository>();
     await repo.deleteProject(id);
@@ -56,70 +57,96 @@ class _SavedprojectsState extends State<Savedprojects> {
     });
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFFFDDF2),
-      appBar: AppBar(
-        backgroundColor: Color(0xFFFFDDF2),
-        title: Text("Saved Projects",
-            style: TextStyle(
-                color: Color(0xFF7F167F),
-                fontWeight: FontWeight.bold,
-                fontSize: 20
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
-            )),
+    return Scaffold(
+      // كان: Color(0xFFFFDDF2)
+      backgroundColor: colorScheme.background,
+      appBar: AppBar(
+        // كان: Color(0xFFFFDDF2)
+        backgroundColor: colorScheme.surface,
+        elevation: 0,
+        title: Text(
+          "Saved Projects",
+          style: textTheme.titleLarge?.copyWith(
+            // كان: Color(0xFF7F167F)
+            color: colorScheme.primary,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
         centerTitle: true,
-        leading: BackButton(color: Color(0xFF7F167F)),
+        leading: BackButton(
+          // كان: Color(0xFF7F167F)
+          color: colorScheme.primary,
+        ),
       ),
-      body: ListViewProjects(projectsFuture,removeProject),
+      body: ListViewProjects(
+        context,
+        projectsFuture,
+        removeProject,
+      ),
     );
   }
 }
 
+/// ✅ خلتها تاخد BuildContext عشان نستخدم الـ ColorScheme و TextTheme
+Widget ListViewProjects(
+    BuildContext context,
+    Future<List<SavedProject>> projectsFuture,
+    Future<void> Function(int id) removeProject,
+    ) {
+  final colorScheme = Theme.of(context).colorScheme;
+  final textTheme = Theme.of(context).textTheme;
 
-
-Widget ListViewProjects(Future<List<SavedProject>> projectsFuture, Future<void> Function(int id) removeProject) {
   return FutureBuilder<List<SavedProject>>(
-      future: projectsFuture,
-      builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    final data = snapshot.data ?? [];
-    if (data.isEmpty) {
-      return const Center(
-        child: Text(
-          "No saved projects yet",
-          style: TextStyle(
-            color: Color(0xFF7F167F),
-            fontSize: 16,
+    future: projectsFuture,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(colorScheme.primary),
           ),
-        ),
-      );
-    }
+        );
+      }
 
-    return ListView.builder(
-    itemCount: data.length,
-    itemBuilder: (context, index) {
-      return ProjectCards(
-        imageBase64: data[index].image,
-        title: data[index].title,
-        description: data[index].prompt,
-        time: data[index].createdAt?? "Unknown time",
-        onDismiss: () {
-          final id = data[index].id;
-          if (id != null) {
-            removeProject(id);
-          } else {
-            print("ERROR: project id is null");
-          }
+      final data = snapshot.data ?? [];
+
+      if (data.isEmpty) {
+        return Center(
+          child: Text(
+            "No saved projects yet",
+            style: textTheme.bodyMedium?.copyWith(
+              // كان: Color(0xFF7F167F)
+              color: colorScheme.onBackground.withOpacity(0.7),
+              fontSize: 16,
+            ),
+          ),
+        );
+      }
+
+      return ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          return ProjectCards(
+            imageBase64: data[index].image,
+            title: data[index].title,
+            description: data[index].prompt,
+            time: data[index].createdAt ?? "Unknown time",
+            onDismiss: () {
+              final id = data[index].id;
+              if (id != null) {
+                removeProject(id);
+              } else {
+                debugPrint("ERROR: project id is null");
+              }
+            },
+          );
         },
       );
     },
   );
 }
-  );
-}
-
-

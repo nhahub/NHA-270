@@ -31,7 +31,7 @@ class Result extends StatelessWidget {
                   barrierColor: Colors.black.withOpacity(0.85,), // خلفية غامقة شفافة
                   barrierDismissible: true,
                   context: context,
-                  builder: (_) => ZoomImage(imageBytes: imageBytes),
+                  builder: (_) => ZoomImage(image: MemoryImage(imageBytes)),
                 );
               },
               child: Image.memory(

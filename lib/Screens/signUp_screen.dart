@@ -20,6 +20,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController confirm_password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  final UserRepository userRepo = UserRepository();
 
   @override
   void dispose() {
@@ -30,9 +31,7 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
-  final UserRepository userRepo = UserRepository();
-
-  Future<void> onSignupSuccess(String userEmail,BuildContext context) async {
+  Future<void> onSignupSuccess(String userEmail, BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', true);
     await prefs.setString('userEmail', userEmail);
@@ -40,7 +39,6 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> signup(BuildContext context) async {
-    //  أول حاجة: validate form
     if (!formKey.currentState!.validate()) {
       return;
     }
@@ -58,18 +56,23 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
-    await userRepo.insertUser(User(email: email, name: name, password: pass));
+    await userRepo.insertUser(
+      User(email: email, name: name, password: pass),
+    );
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Account created successfully')),
     );
     await onSignupSuccess(email, context);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
+      // حتى لو الصورة مغطية، نخليها صح
+      backgroundColor: colorScheme.background,
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -92,7 +95,16 @@ class _SignupScreenState extends State<SignupScreen> {
                         height: 550,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(80),
-                          color: Colors.white,
+                          // كان: Colors.white
+                          color: colorScheme.surface.withOpacity(0.96),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 18,
+                              offset: const Offset(0, 10),
+                              color:
+                              colorScheme.shadow.withOpacity(0.12),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
@@ -100,62 +112,69 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               "Sign up",
-                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                              style: textTheme.titleLarge?.copyWith(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                                color: colorScheme.primary,
+                              ),
                             ),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                             CustomTextField(
                               keyboardType: TextInputType.name,
-                                label: "Full Name",
-                                controller: nameUser,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please enter a name";
-                                  }
+                              label: "Full Name",
+                              controller: nameUser,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter a name";
                                 }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 21),
                             CustomTextField(
-                                keyboardType: TextInputType.emailAddress,
-                                label: "Email",
-                                controller: emailUser,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please enter an email";
-                                  }
-                                  if(!value.contains("@") || !value.contains(".")){
-                                    return "Please enter a valid email";
-                                  }
-                                  return null;
+                              keyboardType: TextInputType.emailAddress,
+                              label: "Email",
+                              controller: emailUser,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter an email";
                                 }
+                                if (!value.contains("@") ||
+                                    !value.contains(".")) {
+                                  return "Please enter a valid email";
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 21),
                             CustomTextField(
                               label: "Password",
                               obscureText: true,
                               controller: password,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please enter a password";
-                                  }
-                                  if (value.length < 6 ) {
-                                    return "Password must be at least 6 characters";
-                                  }
-                                  if (!value.contains(RegExp('[a-z]'))){
-                                    return "Password must contain at least one lowercase letter";
-                                  }
-                                  if (!value.contains(RegExp('[A-Z]'))){
-                                    return "Password must contain at least one uppercase letter";
-                                  }
-                                  if (!value.contains(RegExp('[0-9]'))){
-                                    return "Password must contain at least one number";
-                                  }
-                                  if (!value.contains(RegExp('[!@#\$&*~]'))){
-                                    return "Password must contain at least one special character";
-                                  }
-                                  return null;
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter a password";
                                 }
+                                if (value.length < 6) {
+                                  return "Password must be at least 6 characters";
+                                }
+                                if (!value.contains(RegExp('[a-z]'))) {
+                                  return "Password must contain at least one lowercase letter";
+                                }
+                                if (!value.contains(RegExp('[A-Z]'))) {
+                                  return "Password must contain at least one uppercase letter";
+                                }
+                                if (!value.contains(RegExp('[0-9]'))) {
+                                  return "Password must contain at least one number";
+                                }
+                                if (!value.contains(
+                                    RegExp('[!@#\$&*~]'))) {
+                                  return "Password must contain at least one special character";
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 21),
                             CustomTextField(
@@ -163,7 +182,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               obscureText: true,
                               controller: confirm_password,
                               validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
+                                if (value == null ||
+                                    value.trim().isEmpty) {
                                   return 'Please confirm password';
                                 }
                                 if (value != password.text) {
@@ -172,38 +192,42 @@ class _SignupScreenState extends State<SignupScreen> {
                                 return null;
                               },
                             ),
-                            SizedBox(height: 42),
+                            const SizedBox(height: 42),
                             CustomButton(
                               text: "Next",
-                              onPressed: () {
-                                signup(context);
-                              },
+                              onPressed: () => signup(context),
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         "Already have an account?",
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                        style: textTheme.bodySmall?.copyWith(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
                           );
                         },
-                        child: const Text(
+                        child: Text(
                           "Log in",
-                          style: TextStyle(
-                            color: Color(0xFFCB1C8D),
+                          style: textTheme.bodySmall?.copyWith(
+                            // كان: Color(0xFFCB1C8D)
+                            color: colorScheme.tertiary,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),

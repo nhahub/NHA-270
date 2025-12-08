@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class VerificationBox extends StatefulWidget {
   final TextEditingController controller;
 
-  const VerificationBox({required this.controller, Key? key}) : super(key: key);
+  const VerificationBox({required this.controller, Key? key});
 
   @override
   State<VerificationBox> createState() => _VerificationBoxState();
@@ -34,11 +34,11 @@ class _VerificationBoxState extends State<VerificationBox> {
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      width: 55,
-      height: 55,
+      width: 56,
+      height: 56,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isFocused
               ? const Color(0xFFCB1C8D) // لون غامق عند الفوكس

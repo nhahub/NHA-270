@@ -3,9 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 class ZoomImage extends StatelessWidget {
-  final Uint8List imageBytes;
+  final ImageProvider image;
 
-  const ZoomImage({super.key, required this.imageBytes});
+  const ZoomImage({super.key, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +16,8 @@ class ZoomImage extends StatelessWidget {
           panEnabled: true,        // سحب الصورة
           minScale: 1,             // أقل zoom
           maxScale: 10,             // أقصى zoom
-          child: Image.memory(
-            imageBytes,
+          child: Image(
+            image: image,
             fit: BoxFit.contain,
           ),
         ),

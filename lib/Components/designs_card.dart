@@ -12,7 +12,22 @@ class DesignsCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>Designdetails(image: image,description: description,)));
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 700),
+              pageBuilder: (context, animation, secondaryAnimation) => Designdetails(image: image,description: description,),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                final scaleAnimation = Tween<double>(begin: 0.7, end: 1.0)
+                    .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut));
+
+                return ScaleTransition(
+                  scale: scaleAnimation,
+                  child: child,
+                );
+              },
+            ),
+          );
         },
         child: Container(
           width: 100,

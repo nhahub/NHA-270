@@ -38,7 +38,6 @@ class _EditprofileState extends State<Editprofile> {
     super.dispose();
   }
 
-
   Future<void> pickImage() async {
     final picker = ImagePicker();
     final XFile? picked = await picker.pickImage(
@@ -90,30 +89,59 @@ class _EditprofileState extends State<Editprofile> {
     } else {
       avatarImage = const AssetImage("assets/images/User_Profile.png");
     }
+
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      backgroundColor: Color(0xFFFFDDF2),
+      // كان: Color(0xFFFFDDF2)
+      backgroundColor: colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFDDF2),
+        // كان: Color(0xFFFFDDF2)
+        backgroundColor: colorScheme.surface,
+        elevation: 0,
         title: Text(
           "Edit Profile",
-          style: TextStyle(
-            color: Color(0xFF7F167F),
+          style: textTheme.titleLarge?.copyWith(
+            // كان: Color(0xFF7F167F)
+            color: colorScheme.primary,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
         centerTitle: true,
-        leading: BackButton(color: Color(0xFF7F167F)),
+        leading: BackButton(
+          // كان: Color(0xFF7F167F)
+          color: colorScheme.primary,
+        ),
       ),
-      body: EditProfileBody(context,avatarImage,pickImage,removeImage,nameController,saveChanges),
+      body: EditProfileBody(
+        context,
+        avatarImage,
+        pickImage,
+        removeImage,
+        nameController,
+        saveChanges,
+      ),
     );
   }
 }
 
-Widget EditProfileBody(context, ImageProvider<Object> avatarImage, Future<void> Function() pickImage, void Function() removeImage, TextEditingController nameController, Future<void> Function(BuildContext context) saveChanges) {
+Widget EditProfileBody(
+    BuildContext context,
+    ImageProvider<Object> avatarImage,
+    Future<void> Function() pickImage,
+    void Function() removeImage,
+    TextEditingController nameController,
+    Future<void> Function(BuildContext context) saveChanges,
+    ) {
+  final colorScheme = Theme.of(context).colorScheme;
+  final textTheme = Theme.of(context).textTheme;
+
   return SingleChildScrollView(
     child: Column(
       children: [
+        const SizedBox(height: 24),
         Stack(
           children: [
             Center(
@@ -124,48 +152,75 @@ Widget EditProfileBody(context, ImageProvider<Object> avatarImage, Future<void> 
             ),
             Positioned(
               bottom: 0,
-              right: MediaQuery.of(context).size.width / 2 -100,
+              right: MediaQuery.of(context).size.width / 2 - 100,
               child: IconButton(
                 onPressed: pickImage,
-                icon: Icon(Icons.edit, color: Color(0xFF9700A3)),
+                icon: Icon(
+                  Icons.edit,
+                  color: colorScheme.primary, // كان: Color(0xFF9700A3)
+                ),
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.white),
+                  // كان: Colors.white
+                  backgroundColor:
+                  MaterialStateProperty.all(colorScheme.surface),
+                  shape: MaterialStateProperty.all(
+                    const CircleBorder(),
+                  ),
+                  elevation: MaterialStateProperty.all(2),
                 ),
               ),
             ),
           ],
         ),
-        TextButton(onPressed: removeImage, child: Text("Remove Image")),
-        SizedBox(height: 24),
+        TextButton(
+          onPressed: removeImage,
+          child: Text(
+            "Remove Image",
+            style: textTheme.bodyMedium?.copyWith(
+              color: colorScheme.error, // أو colorScheme.primary لو تحب أهدى
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
         Form(
-            child: SizedBox(
-              width: 350,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      labelText: "Name",
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Color(0xFF7F167F)),
+          child: SizedBox(
+            width: 350,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: "Name",
+                    labelStyle: TextStyle(
+                      color: colorScheme.onBackground.withOpacity(0.7),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        // كان: Color(0xFF7F167F)
+                        color: colorScheme.primary,
+                        width: 1.6,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Color(0xFF7F167F)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        // كان: Color(0xFF7F167F)
+                        color: colorScheme.outline,
+                        width: 1.2,
                       ),
-                    )
-
+                    ),
                   ),
-                  SizedBox(height: 48),
-                  UpdateButton(
-                    onPressed: () => saveChanges(context),
-                  ),
-
-                ]
-              ),
-            )
-        )
+                ),
+                const SizedBox(height: 48),
+                UpdateButton(
+                  onPressed: () => saveChanges(context),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     ),
   );

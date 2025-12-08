@@ -187,7 +187,9 @@ class DrawerMenu extends StatelessWidget {
               leading: const Icon(Icons.settings_outlined),
               textColor: const Color(0xFF9700A3),
               iconColor: const Color(0xFF9700A3),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, "Terms");
+              },
             ),
           ],
         ),
