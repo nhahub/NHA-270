@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 List<String> examples = [
   "A modern, open-cost concept house with 2 bedrooms, a home office, and a large kitchen island. Include a master bathroom with a walk-in shower.",
   "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
-  "Cozy 1-bedroom apartment with a small balcony, a combined living and dining area, and plenty of natural light.",
+  "An industrial-style loft conversion with exposed brickwork, steel beams, and polished concrete floors. Features floor-to-ceiling windows, an open staircase, and a dedicated artist's studio nook.",
+  "Spacious family home designed around a central, shaded courtyard. Includes 4 large bedrooms, high ceilings, a separate laundry room, and a dedicated playroom for children."
+  "A minimalist 3-story townhouse featuring a rooftop terrace with panoramic city views, an integrated smart home system, and an elevator. Includes an attached two-car garage."
 ];
 
 class Examples extends StatelessWidget {
