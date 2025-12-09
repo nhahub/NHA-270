@@ -42,7 +42,6 @@ class SaveButton extends StatelessWidget {
       ),
     );
 
-    // هنا بس بنظهر رسالة نجاح، الـ Dialog نفسه بيقفل من PopUpSave
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Project saved successfully')),
     );
@@ -59,7 +58,6 @@ class SaveButton extends StatelessWidget {
           showDialog(
             context: context,
             builder: (dialogContext) => PopUpSave(
-              // نمرر كونتكست الشاشة الأساسية عشان SnackBar و repo
               onSave: (title) => _saveProject(title, context),
             ),
           );
@@ -90,7 +88,7 @@ class SaveButton extends StatelessWidget {
             child: Text(
               "Save",
               style: TextStyle(
-                color: colorScheme.onPrimary,     // كان: Colors.white
+                color: colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),

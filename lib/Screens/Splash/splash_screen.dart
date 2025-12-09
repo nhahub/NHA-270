@@ -17,7 +17,6 @@ class _SplashScreen1State extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // مدة ظهور الـ Splash
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,

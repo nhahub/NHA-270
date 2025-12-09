@@ -39,7 +39,6 @@ class _TopSegmentedSwitchState extends State<TopSegmentedSwitch> {
       height: height,
       child: Stack(
         children: [
-          // الخلفية (Track)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Container(
@@ -80,7 +79,6 @@ class _TopSegmentedSwitchState extends State<TopSegmentedSwitch> {
             ),
           ),
 
-          // النصوص + InkWell
           Row(
             children: [
               Expanded(

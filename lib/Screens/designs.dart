@@ -24,7 +24,7 @@ class _DesignsState extends State<Designs> {
   }
 }
 
-// ✅ خلّيتها تاخد BuildContext عشان نستخدم الـ Theme
+
 Widget listViewDesigns(BuildContext context, Future<List<Design>> future) {
   final colorScheme = Theme.of(context).colorScheme;
   final textTheme = Theme.of(context).textTheme;
@@ -37,7 +37,6 @@ Widget listViewDesigns(BuildContext context, Future<List<Design>> future) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(
           child: CircularProgressIndicator(
-            // يمشي مع البراند
             valueColor: AlwaysStoppedAnimation(colorScheme.primary),
           ),
         );
@@ -67,7 +66,6 @@ Widget listViewDesigns(BuildContext context, Future<List<Design>> future) {
       }
 
       return Scrollbar(
-        // thumbVisibility: true,
         thickness: 6,
         radius: const Radius.circular(12),
         child: ListView.builder(

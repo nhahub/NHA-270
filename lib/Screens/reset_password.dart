@@ -42,7 +42,6 @@ class ResetPassword extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      // مش هتظهر غالبًا بسبب الصورة، بس نخليها صح
       backgroundColor: colorScheme.background,
       body: Stack(
         alignment: Alignment.center,

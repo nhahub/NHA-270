@@ -37,7 +37,7 @@ class UpdateButton extends StatelessWidget {
           child: Text(
             "Update",
             style: TextStyle(
-              color: colorScheme.onPrimary,  // 🔥 نص واضح حسب الثيم
+              color: colorScheme.onPrimary,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),

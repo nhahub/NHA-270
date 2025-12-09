@@ -45,21 +45,19 @@ class AIresult extends StatelessWidget {
           ),
           gradient: const LinearGradient(
             colors: [
-              Color(0xFF6A2FEA), // Primary Purple
-              Color(0xFFFF8AE2), // AI Pink
+              Color(0xFF6A2FEA),
+              Color(0xFFFF8AE2),
             ],
           ),
         ),
         centerTitle: true,
         leading: BackButton(
-          // كان: Color(0xFF7F167F)
           color: colorScheme.primary,
         ),
         actions: [
           PopupMenuButton(
             icon: Icon(
               Icons.more_vert,
-              // كان: Color(0xFF7F167F)
               color: colorScheme.primary,
             ),
             onSelected: (value) {

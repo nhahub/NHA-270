@@ -37,7 +37,6 @@ class _CustomizeState extends State<Customize> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // العنوان الرئيسي
             GradientText(
               text: "Describe Your Ideal",
               style: textTheme.titleLarge!.copyWith(
@@ -46,8 +45,8 @@ class _CustomizeState extends State<Customize> {
               ),
               gradient: const LinearGradient(
                 colors: [
-                  Color(0xFF6A2FEA), // Primary Purple
-                  Color(0xFFFF8AE2), // AI Pink
+                  Color(0xFF6A2FEA),
+                  Color(0xFFFF8AE2),
                 ],
               ),
             ),
@@ -65,7 +64,6 @@ class _CustomizeState extends State<Customize> {
 
             const SizedBox(height: 10),
 
-            // النص التوضيحي
             Text(
               "Let our AI bring it to life. Start by describing the rooms, style, and key features",
               style: textTheme.bodyMedium?.copyWith(
@@ -92,7 +90,7 @@ class _CustomizeState extends State<Customize> {
                         content: Text("Please enter a prompt first"),
                       ),
                     );
-                    return; // مهم جدًا عشان ماينقلش على الشاشة اللي بعدها
+                    return;
                   }
 
                   Navigator.push(

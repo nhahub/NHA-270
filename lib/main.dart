@@ -14,13 +14,11 @@ import 'Repositories/design_repository.dart';
 import 'Repositories/favorite_repository.dart';
 import 'Repositories/saved_projects_repository.dart';
 import 'Screens/Splash/splash_screen_first.dart';
-import 'Screens/editProfile.dart';
 import 'Screens/favorites.dart';
 import 'Screens/customize.dart';
 import 'Screens/home.dart';
 import 'Screens/login_screen.dart';
 import 'Screens/profile.dart';
-import 'Screens/reset_password.dart';
 import 'Screens/savedProjects.dart';
 import 'Screens/signUp_screen.dart';
 import 'Seed/seed_designs.dart';
@@ -33,9 +31,8 @@ Future<void> main() async {
   final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
   final bool isSeeded = prefs.getBool('isSeeded') ?? false;
 
-  // لو أول مرة → اعمل Insert للـ Designs
   if (!isSeeded) {
-    await seedDesignsPart1();   // 👈 هنا بيشتغل الـ SEED
+    await seedDesignsPart1();
     await prefs.setBool('isSeeded', true);
   }
   runApp(

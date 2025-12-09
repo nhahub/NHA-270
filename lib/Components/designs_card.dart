@@ -59,7 +59,6 @@ class DesignsCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             gradient: LinearGradient(
               colors: [
-                // كان: Color(0xFFFF08FF).withOpacity(0.05)...
                 colorScheme.secondary.withOpacity(0.08),
                 colorScheme.primary.withOpacity(0.14),
               ],

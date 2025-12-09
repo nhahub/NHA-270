@@ -17,7 +17,6 @@ class Prompt extends StatelessWidget {
       decoration: InputDecoration(
         filled: true,
 
-        // كان: Colors.white.withOpacity(0.3)
         fillColor: colorScheme.surface.withOpacity(0.4),
 
         focusedBorder: OutlineInputBorder(
@@ -32,7 +31,6 @@ class Prompt extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            // كان: 7F167F
             color: colorScheme.primary.withOpacity(0.4),
             width: 1.0,
           ),
@@ -40,7 +38,6 @@ class Prompt extends StatelessWidget {
 
         hintText: "Design your 2D floor plan",
         hintStyle: TextStyle(
-          // كان: Color(0xFF7F167F).withOpacity(0.20)
           color: colorScheme.primary.withOpacity(0.30),
         ),
       ),

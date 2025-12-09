@@ -40,7 +40,6 @@ class _ColorSchemeToggleState extends State<ColorSchemeToggle> {
       width: width,
       child: Stack(
         children: [
-          // الخلفية (Track) – Glassy / Subtle
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(999),
@@ -52,7 +51,6 @@ class _ColorSchemeToggleState extends State<ColorSchemeToggle> {
             ),
           ),
 
-          // الزرار المتحرك (Thumb) – Gradient + Glow
           AnimatedAlign(
             duration: const Duration(milliseconds: 230),
             curve: Curves.easeOut,
@@ -82,7 +80,6 @@ class _ColorSchemeToggleState extends State<ColorSchemeToggle> {
             ),
           ),
 
-          // النصوص و الأيقونات
           Row(
             children: [
               // Light

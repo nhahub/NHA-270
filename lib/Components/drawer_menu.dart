@@ -157,7 +157,6 @@ class DrawerMenu extends StatelessWidget {
           ],
         ),
 
-        // --- Color Scheme section ---
         Positioned(
           bottom: 100,
           left: 0,

@@ -42,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushReplacementNamed(context, "Home");
   }
 
+
   Future<void> login(BuildContext context) async {
     if (!formKey.currentState!.validate()) {
       return;
@@ -68,7 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      // ممكن نخليها برضه ماشية على الثيم، رغم إن الصورة مغطية
       backgroundColor: colorScheme.background,
       body: Stack(
         alignment: Alignment.center,

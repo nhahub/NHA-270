@@ -9,7 +9,7 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onPressed,
-    this.opacity = 1, // 1 = عادي ، 0.3 = مستخدم في Splash
+    this.opacity = 1,
   });
 
   @override
@@ -18,13 +18,12 @@ class CustomButton extends StatelessWidget {
 
     return SizedBox(
       width: 350,
-      height: 48, // أكثر راحة من 40
+      height: 48,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          // كان: Color(0xFFCB1C8D)
           backgroundColor: colorScheme.primary.withOpacity(opacity),
-          foregroundColor: colorScheme.onPrimary, // لون النص
+          foregroundColor: colorScheme.onPrimary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),

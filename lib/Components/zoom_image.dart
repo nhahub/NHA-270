@@ -12,13 +12,11 @@ class ZoomImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: GestureDetector(
-        // Tap على الخلفية فقط → يقفل
         onTap: () => Navigator.pop(context),
         behavior: HitTestBehavior.opaque,
         child: Center(
-          // GestureDetector داخلي يمنع إغلاق عند الضغط على الصورة نفسها
           child: GestureDetector(
-            onTap: () {}, // عشان ما يتبعتش للأب
+            onTap: () {},
             child: InteractiveViewer(
               panEnabled: true,
               minScale: 1,

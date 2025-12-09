@@ -21,7 +21,7 @@ class _VerificationBoxState extends State<VerificationBox> {
     _focusNode = FocusNode();
 
     _focusNode.addListener(() {
-      setState(() {}); // يحدث الواجهة عند تغيير حالة الفوكس
+      setState(() {});
     });
   }
 
@@ -46,9 +46,7 @@ class _VerificationBoxState extends State<VerificationBox> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isFocused
-          // كان: Color(0xFFCB1C8D)
               ? colorScheme.primary
-          // كان: Color(0x33CB1C8D)
               : colorScheme.primary.withOpacity(0.2),
           width: isFocused ? 2 : 1,
         ),

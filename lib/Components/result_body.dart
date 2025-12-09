@@ -22,7 +22,6 @@ class Result extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // 💬 الرسالة (البُرومبت)
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Message(msg: msgPrompt),
@@ -30,7 +29,6 @@ class Result extends StatelessWidget {
 
           const SizedBox(height: 8),
 
-          // 🧠 كارد الـ AI Image (Glow + Gradient Border)
           Center(
             child: GestureDetector(
               onTap: () {
@@ -64,7 +62,7 @@ class Result extends StatelessWidget {
                   ],
                 ),
                 child: Container(
-                  margin: const EdgeInsets.all(3), // سمك الحدود
+                  margin: const EdgeInsets.all(3),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(21),
                     color: Colors.black.withOpacity(0.85),
@@ -86,7 +84,6 @@ class Result extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          // 🔖 Label صغيرة تحت الصورة تبين إنها AI
           Center(
             child: Container(
               padding:
@@ -122,7 +119,6 @@ class Result extends StatelessWidget {
 
           const SizedBox(height: 80),
 
-          // 💾 زرار الـ Save
           SaveButton(imageBytes: imageBytes, prompt: msgPrompt),
         ],
       ),

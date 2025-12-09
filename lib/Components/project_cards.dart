@@ -20,12 +20,12 @@ class ProjectCards extends StatelessWidget {
 
   String formatTime(String createdAt) {
     final date = DateTime.parse("${createdAt}Z");
-    return DateFormat('hh:mm a').format(date); // مثال: 07:15 AM
+    return DateFormat('hh:mm a').format(date);
   }
 
   String formatDate(String createdAt) {
     final date = DateTime.parse(createdAt);
-    return DateFormat('dd/MM/yyyy').format(date); // مثال: 05/12/2025
+    return DateFormat('dd/MM/yyyy').format(date);
   }
 
   @override
@@ -42,7 +42,6 @@ class ProjectCards extends StatelessWidget {
         }
       },
 
-      // خلفية الـ swipe للحذف
       background: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
@@ -85,7 +84,7 @@ class ProjectCards extends StatelessWidget {
                     left: 8,
                     right: 8,
                     top: 4,
-                    bottom: 24, // سيب مساحة للوقت تحت
+                    bottom: 24,
                   ),
                   leading: Icon(
                     Icons.auto_fix_high,
@@ -128,7 +127,6 @@ class ProjectCards extends StatelessWidget {
                   isThreeLine: true,
                 ),
 
-                // الوقت تحت على اليمين
                 Positioned(
                   bottom: 4,
                   right: 8,

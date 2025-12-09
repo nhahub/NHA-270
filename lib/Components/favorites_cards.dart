@@ -85,7 +85,6 @@ class FavoritesCards extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 gradient: LinearGradient(
                   colors: [
-                    // كان: أصفر وبنفسجي هارد كود
                     colorScheme.tertiary.withOpacity(0.18),
                     colorScheme.primary.withOpacity(0.14),
                   ],

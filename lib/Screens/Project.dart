@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import '../Components/message.dart';
 import '../Components/zoom_image.dart';
 import '../Utils/download_image.dart';
@@ -24,7 +22,7 @@ class Project extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          ok ? 'Image saved to gallery ✅' : 'Failed to save image ❌',
+          ok ? 'Image saved to gallery ' : 'Failed to save image ',
         ),
       ),
     );
@@ -37,16 +35,13 @@ class Project extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      // كان: Color(0xFFFFDDF2)
       backgroundColor: colorScheme.background,
       appBar: AppBar(
-        // كان: Color(0xFFFFDDF2)
         backgroundColor: colorScheme.surface,
         elevation: 0,
         title: Text(
           title,
           style: textTheme.titleLarge?.copyWith(
-            // كان: Color(0xFF7F167F)
             color: colorScheme.primary,
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -54,14 +49,12 @@ class Project extends StatelessWidget {
         ),
         centerTitle: true,
         leading: BackButton(
-          // كان: Color(0xFF7F167F)
           color: colorScheme.primary,
         ),
         actions: [
           PopupMenuButton(
             icon: Icon(
               Icons.more_vert,
-              // كان: Color(0xFF7F167F)
               color: colorScheme.primary,
             ),
             onSelected: (value) {

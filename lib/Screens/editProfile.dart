@@ -198,7 +198,6 @@ Widget EditProfileBody(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
-                        // كان: Color(0xFF7F167F)
                         color: colorScheme.primary,
                         width: 1.6,
                       ),
@@ -206,7 +205,6 @@ Widget EditProfileBody(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
-                        // كان: Color(0xFF7F167F)
                         color: colorScheme.outline,
                         width: 1.2,
                       ),

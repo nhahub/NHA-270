@@ -19,8 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // لو فعلاً مش بتستخدمه، تقدر تمسح السطر ده
-    // final designRepo = context.read<DesignRepository>();
+
 
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;

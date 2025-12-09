@@ -63,17 +63,14 @@ class _DesigndetailsState extends State<Designdetails> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      // كان: Color(0xFFFFDDF2)
       backgroundColor: colorScheme.background,
 
       appBar: AppBar(
-        // كان: Color(0xFFFFDDF2)
         backgroundColor: colorScheme.surface,
         elevation: 0,
         title: Text(
           "Design Details",
           style: textTheme.titleLarge?.copyWith(
-            // كان: Color(0xFF9700A3)
             color: colorScheme.primary,
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -81,7 +78,6 @@ class _DesigndetailsState extends State<Designdetails> {
         ),
         centerTitle: true,
         leading: BackButton(
-          // كان: Color(0xFF9700A3)
           color: colorScheme.primary,
         ),
         // actions: [
@@ -98,7 +94,7 @@ class _DesigndetailsState extends State<Designdetails> {
 
       body: Stack(
         children: [
-          // الهيدر اللي ورا بالصورة / الجradient
+
           Container(
             height: 250,
             decoration: BoxDecoration(
@@ -106,8 +102,6 @@ class _DesigndetailsState extends State<Designdetails> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  // كان: Color(0xFFFF08FF).withOpacity(0.26),
-                  //      Color(0xFFFF08FF).withOpacity(0.36),
                   colorScheme.primary.withOpacity(0.18),
                   colorScheme.secondary.withOpacity(0.30),
                 ],
@@ -149,7 +143,6 @@ class _DesigndetailsState extends State<Designdetails> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Description text
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -159,7 +152,6 @@ class _DesigndetailsState extends State<Designdetails> {
                             Text(
                               "Description",
                               style: textTheme.titleMedium?.copyWith(
-                                // كان: Color(0xFF9700A3)
                                 color: colorScheme.primary,
                                 fontSize: 17,
                                 fontWeight: FontWeight.w500,

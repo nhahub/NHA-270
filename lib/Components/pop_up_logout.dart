@@ -51,12 +51,12 @@ class PopUpLogout extends StatelessWidget {
             Expanded(
               child: ElevatedButton(
                 onPressed: () async {
-                  Navigator.pop(context); // يقفل البوب-أب
-                  await logout();         // يمسح البيانات
+                  Navigator.pop(context);
+                  await logout();
                   Navigator.pushNamedAndRemoveUntil(
                     context,
                     "First Splash",
-                        (_) => false,        // يمسح كل الستاك
+                        (_) => false,
                   );
                 },
                 style: ElevatedButton.styleFrom(
