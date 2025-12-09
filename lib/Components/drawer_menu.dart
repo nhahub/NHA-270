@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../Bloc/user/user_bloc.dart';
 import '../Bloc/user/user_state.dart';
 import '../Models/user.dart';
@@ -14,6 +15,12 @@ class DrawerMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
+    final colorScheme   = Theme.of(context).colorScheme;
+    final textTheme     = Theme.of(context).textTheme;
+
+    Color headerBg = colorScheme.primary.withOpacity(0.14);
+    Color headerBorder = colorScheme.primary.withOpacity(0.18);
+    Color headerText = colorScheme.primary;
 
     return Stack(
       children: [
@@ -25,76 +32,67 @@ class DrawerMenu extends StatelessWidget {
               },
               child: BlocBuilder<UserBloc, UserState>(
                 builder: (context, state) {
-                  // حالة Loading أو Initial → هعرض Header بسيط
-                  if (state is UserLoading || state is UserInitial) {
+                  Widget buildHeader({
+                    required String title,
+                    String? subtitle,
+                    ImageProvider? avatar,
+                  }) {
                     return DrawerHeader(
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFF08FF).withOpacity(0.26),
+                        color: headerBg,
                         border: Border(
                           bottom: BorderSide(
-                            color: const Color(0xFFFF08FF).withOpacity(0.26),
+                            color: headerBg,
                           ),
                         ),
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           CircleAvatar(
                             radius: 30,
-                            backgroundImage: AssetImage(
-                              "assets/images/User_Profile.png",
-                            ),
+                            backgroundImage:
+                            avatar ?? const AssetImage("assets/images/User_Profile.png"),
                           ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Loading...",
-                            style: TextStyle(
-                              color: Color(0xFF9700A3),
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          const SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                title,
+                                style: textTheme.bodyLarge?.copyWith(
+                                  color: headerText,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              if (subtitle != null)
+                                Text(
+                                  subtitle,
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: headerText.withOpacity(0.9),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                            ],
                           ),
                         ],
                       ),
                     );
                   }
 
-                  // لو حصل Error أو مفيش يوزر
+                  // Loading / Initial
+                  if (state is UserLoading || state is UserInitial) {
+                    return buildHeader(title: "Loading...");
+                  }
+
+                  // Error / no user
                   if (state is UserError) {
-                    return DrawerHeader(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFF08FF).withOpacity(0.26),
-                        border: Border(
-                          bottom: BorderSide(
-                            color: const Color(0xFFFF08FF).withOpacity(0.26),
-                          ),
-                        ),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage(
-                              "assets/images/User_Profile.png",
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Guest User",
-                            style: TextStyle(
-                              color: Color(0xFF9700A3),
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
+                    return buildHeader(title: "Guest User");
                   }
 
                   if (state is! UserLoaded) {
-                    // fallback احتياطي
                     return const SizedBox.shrink();
                   }
 
@@ -110,56 +108,21 @@ class DrawerMenu extends StatelessWidget {
                     const AssetImage("assets/images/User_Profile.png");
                   }
 
-                  return DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFF08FF).withOpacity(0.26),
-                      border: Border(
-                        bottom: BorderSide(
-                          color: const Color(0xFFFF08FF).withOpacity(0.26),
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundImage: avatarImage,
-                        ),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              user.name,
-                              style: const TextStyle(
-                                color: Color(0xFF9700A3),
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              user.email,
-                              style: const TextStyle(
-                                color: Color(0xFF9700A3),
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  return buildHeader(
+                    title: user.name,
+                    subtitle: user.email,
+                    avatar: avatarImage,
                   );
                 },
               ),
-            ), // profile header
+            ),
 
+            // --- Menu Items ---
             ListTile(
               title: const Text("New chat"),
               leading: const Icon(Icons.edit),
-              textColor: const Color(0xFF9700A3),
-              iconColor: const Color(0xFF9700A3),
+              textColor: colorScheme.primary,
+              iconColor: colorScheme.primary,
               onTap: () {
                 Navigator.pushNamed(context, "Home");
               },
@@ -167,8 +130,8 @@ class DrawerMenu extends StatelessWidget {
             ListTile(
               title: const Text("Saved projects"),
               leading: const Icon(Icons.bookmark_border),
-              textColor: const Color(0xFF9700A3),
-              iconColor: const Color(0xFF9700A3),
+              textColor: colorScheme.primary,
+              iconColor: colorScheme.primary,
               onTap: () {
                 Navigator.pushNamed(context, "Saved Projects");
               },
@@ -176,8 +139,8 @@ class DrawerMenu extends StatelessWidget {
             ListTile(
               title: const Text("Favorites"),
               leading: const Icon(Icons.favorite_border),
-              textColor: const Color(0xFF9700A3),
-              iconColor: const Color(0xFF9700A3),
+              textColor: colorScheme.primary,
+              iconColor: colorScheme.primary,
               onTap: () {
                 Navigator.pushNamed(context, "Favorite");
               },
@@ -185,8 +148,8 @@ class DrawerMenu extends StatelessWidget {
             ListTile(
               title: const Text("Terms & conditions"),
               leading: const Icon(Icons.settings_outlined),
-              textColor: const Color(0xFF9700A3),
-              iconColor: const Color(0xFF9700A3),
+              textColor: colorScheme.primary,
+              iconColor: colorScheme.primary,
               onTap: () {
                 Navigator.pushNamed(context, "Terms");
               },
@@ -194,23 +157,28 @@ class DrawerMenu extends StatelessWidget {
           ],
         ),
 
-        // Color Scheme section
+        // --- Color Scheme section ---
         Positioned(
           bottom: 100,
           left: 0,
           right: 0,
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 30),
+              Padding(
+                padding: const EdgeInsets.only(left: 30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(Icons.info_outline, color: Color(0xFF9700A3)),
-                    SizedBox(width: 8),
+                    Icon(
+                      Icons.info_outline,
+                      color: colorScheme.primary,
+                    ),
+                    const SizedBox(width: 8),
                     Text(
                       "Color Scheme",
-                      style: TextStyle(color: Color(0xFF9700A3)),
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.primary,
+                      ),
                     ),
                   ],
                 ),

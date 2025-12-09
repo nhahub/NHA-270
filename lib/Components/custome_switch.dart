@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../Providers/theme_provider.dart';
 
 class ColorSchemeToggle extends StatefulWidget {
   final ValueChanged<bool>? onChanged; // true = Light, false = Dark
@@ -20,7 +17,6 @@ class ColorSchemeToggle extends StatefulWidget {
 class _ColorSchemeToggleState extends State<ColorSchemeToggle> {
   late bool _isLight;
 
-
   @override
   void initState() {
     super.initState();
@@ -33,24 +29,30 @@ class _ColorSchemeToggleState extends State<ColorSchemeToggle> {
     widget.onChanged?.call(_isLight);
   }
 
-
   @override
   Widget build(BuildContext context) {
     const double height = 44;
     const double width = 240;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return SizedBox(
       height: height,
       width: width,
       child: Stack(
         children: [
+          // الخلفية (Track) – Glassy / Subtle
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(999),
-             color: Color(0xFFFF08FF).withOpacity(0.26),
+              color: colorScheme.primary.withOpacity(0.08),
+              border: Border.all(
+                color: colorScheme.primary.withOpacity(0.25),
+                width: 1.2,
+              ),
             ),
           ),
 
+          // الزرار المتحرك (Thumb) – Gradient + Glow
           AnimatedAlign(
             duration: const Duration(milliseconds: 230),
             curve: Curves.easeOut,
@@ -61,14 +63,18 @@ class _ColorSchemeToggleState extends State<ColorSchemeToggle> {
               child: Container(
                 width: (width - 8) / 2,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF9700A3),
                   borderRadius: BorderRadius.circular(999),
-                  boxShadow: const [
+                  gradient: LinearGradient(
+                    colors: [
+                      colorScheme.primary,
+                      colorScheme.secondary,
+                    ],
+                  ),
+                  boxShadow: [
                     BoxShadow(
-                      blurRadius: 8,
-                      offset: Offset(0, 3),
-                      spreadRadius: 0,
-                      color: Colors.black26,
+                      color: colorScheme.primary.withOpacity(0.45),
+                      blurRadius: 18,
+                      offset: const Offset(0, 4),
                     )
                   ],
                 ),
@@ -76,8 +82,10 @@ class _ColorSchemeToggleState extends State<ColorSchemeToggle> {
             ),
           ),
 
+          // النصوص و الأيقونات
           Row(
             children: [
+              // Light
               Expanded(
                 child: InkWell(
                   borderRadius: BorderRadius.circular(999),
@@ -89,15 +97,18 @@ class _ColorSchemeToggleState extends State<ColorSchemeToggle> {
                         Icon(
                           Icons.wb_sunny_rounded,
                           size: 18,
-                          color: _isLight ? Colors.white : Color(0xFF9700A3),
+                          color: _isLight
+                              ? colorScheme.onPrimary
+                              : colorScheme.primary,
                         ),
                         const SizedBox(width: 6),
                         Text(
                           'Light',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color:
-                            _isLight ? Colors.white : Color(0xFF9700A3),
+                            color: _isLight
+                                ? colorScheme.onPrimary
+                                : colorScheme.primary,
                           ),
                         ),
                       ],
@@ -105,6 +116,7 @@ class _ColorSchemeToggleState extends State<ColorSchemeToggle> {
                   ),
                 ),
               ),
+
               // Dark
               Expanded(
                 child: InkWell(
@@ -117,15 +129,18 @@ class _ColorSchemeToggleState extends State<ColorSchemeToggle> {
                         Icon(
                           Icons.nightlight_round,
                           size: 18,
-                          color: !_isLight ? Colors.white : Color(0xFF9700A3),
+                          color: !_isLight
+                              ? colorScheme.onPrimary
+                              : colorScheme.primary,
                         ),
                         const SizedBox(width: 6),
                         Text(
                           'Dark',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color:
-                            !_isLight ? Colors.white : Color(0xFF9700A3),
+                            color: !_isLight
+                                ? colorScheme.onPrimary
+                                : colorScheme.primary,
                           ),
                         ),
                       ],

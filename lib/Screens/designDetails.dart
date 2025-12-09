@@ -84,16 +84,16 @@ class _DesigndetailsState extends State<Designdetails> {
           // كان: Color(0xFF9700A3)
           color: colorScheme.primary,
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.more_vert,
-              // كان: Color(0xFF9700A3)
-              color: colorScheme.primary,
-            ),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: Icon(
+        //       Icons.more_vert,
+        //       // كان: Color(0xFF9700A3)
+        //       color: colorScheme.primary,
+        //     ),
+        //   ),
+        // ],
       ),
 
       body: Stack(

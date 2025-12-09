@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Bloc/floorplan/floorplan_bloc.dart';
 import '../Bloc/floorplan/floorplan_event.dart';
+import '../Colors/gradient_button.dart';
+import '../Colors/gradient_text.dart';
 import '../Components/examples.dart';
 import '../Components/prompt_text_field.dart';
 import '../Components/keywords.dart';
@@ -36,22 +38,31 @@ class _CustomizeState extends State<Customize> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // العنوان الرئيسي
-            Text(
-              "Describe Your Ideal",
-              style: textTheme.titleLarge?.copyWith(
+            GradientText(
+              text: "Describe Your Ideal",
+              style: textTheme.titleLarge!.copyWith(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: colorScheme.primary,
+              ),
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF6A2FEA), // Primary Purple
+                  Color(0xFFFF8AE2), // AI Pink
+                ],
               ),
             ),
-            Text(
-              "Space",
-              style: textTheme.titleLarge?.copyWith(
+
+            GradientText(
+              text: "Space",
+              style: textTheme.titleLarge!.copyWith(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: colorScheme.primary,
+              ),
+              gradient: const LinearGradient(
+                colors: [Color(0xFF6A2FEA), Color(0xFFFF8AE2)],
               ),
             ),
+
             const SizedBox(height: 10),
 
             // النص التوضيحي
@@ -62,68 +73,60 @@ class _CustomizeState extends State<Customize> {
               ),
             ),
             const SizedBox(height: 24),
-
-            // الـ Prompt + زر الإرسال
-            Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Prompt(
-                    controller: promptController,
-                  ),
-                ),
-                Positioned(
-                  right: 24,
-                  bottom: 32,
-                  child: IconButton(
-                    onPressed: () {
-                      final text = promptController.text.trim();
-                      if (text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Please enter a prompt first"),
-                          ),
-                        );
-                        return; // مهم جدًا عشان ماينقلش على الشاشة اللي بعدها
-                      }
-
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          transitionDuration:
-                          const Duration(milliseconds: 500),
-                          pageBuilder: (context, animation,
-                              secondaryAnimation) =>
-                              BlocProvider(
-                                create: (_) => FloorplanBloc(
-                                  FloorplanRepository(),
-                                )..add(GenerateFloorplanRequested(text)),
-                                child: AIresult(msg_prompt: text),
-                              ),
-                          transitionsBuilder: (context, animation,
-                              secondaryAnimation, child) {
-                            final offsetAnimation = Tween<Offset>(
-                              begin: const Offset(1.0, 0.0),
-                              end: Offset.zero,
-                            ).animate(animation);
-
-                            return SlideTransition(
-                              position: offsetAnimation,
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.send,
-                      color: colorScheme.primary,
-                    ),
-                  ),
-                ),
-              ],
+      SizedBox(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Prompt(controller: promptController),
             ),
+            const SizedBox(height: 24),
+            Center(
+              child: GenerateButton(
+                text: "Generate Floorplan",
+                onPressed: () {
+                  final text = promptController.text.trim();
+                  if (text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Please enter a prompt first"),
+                      ),
+                    );
+                    return; // مهم جدًا عشان ماينقلش على الشاشة اللي بعدها
+                  }
 
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: const Duration(milliseconds: 500),
+                      pageBuilder:
+                          (context, animation, secondaryAnimation) =>
+                          BlocProvider(
+                            create: (_) => FloorplanBloc(
+                              FloorplanRepository(),
+                            )..add(GenerateFloorplanRequested(text)),
+                            child: AIresult(msg_prompt: text),
+                          ),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        final offsetAnimation = Tween<Offset>(
+                          begin: const Offset(1.0, 0.0),
+                          end: Offset.zero,
+                        ).animate(animation);
+
+                        return SlideTransition(
+                          position: offsetAnimation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
             const SizedBox(height: 24),
 
             // Keywords title

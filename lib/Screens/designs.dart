@@ -67,7 +67,7 @@ Widget listViewDesigns(BuildContext context, Future<List<Design>> future) {
       }
 
       return Scrollbar(
-        thumbVisibility: true,
+        // thumbVisibility: true,
         thickness: 6,
         radius: const Radius.circular(12),
         child: ListView.builder(

@@ -1,5 +1,5 @@
-import 'package:depi_project/Components/prompt_text_field.dart';
 import 'package:flutter/material.dart';
+
 List<String> keywords = [
   "Bedroom",
   "Lawn",
@@ -8,36 +8,55 @@ List<String> keywords = [
   "Living",
   "Toilets",
   "Roof",
-  "balcony"
+  "Balcony"
 ];
+
 class Suggestions extends StatelessWidget {
   final TextEditingController controller;
-   const Suggestions({super.key, required this.controller});
+
+  const Suggestions({
+    super.key,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme   = Theme.of(context).textTheme;
 
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: keywords.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 5,
-        mainAxisExtent: 50,
+        mainAxisExtent: 48,
+        crossAxisSpacing: 4,
+        mainAxisSpacing: 4,
       ),
       itemBuilder: (context, index) {
-        return Center(child: TextButton(
+        return Center(
+          child: TextButton(
             style: TextButton.styleFrom(
-              backgroundColor: Color(0xFFFF08FF).withOpacity(0.16)
+              backgroundColor: colorScheme.primary.withOpacity(0.12),
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
-            onPressed: (){
-                controller.text = "${controller.text} ${keywords[index]}";
+            onPressed: () {
+              controller.text = "${controller.text} ${keywords[index]}";
             },
-            child: Text(keywords[index],style: TextStyle(
-                color: Color(0xFF7F167F),
-                fontSize: 11
-            ),)
-        ));
+            child: Text(
+              keywords[index],
+              style: textTheme.bodySmall?.copyWith(
+                color: colorScheme.primary,
+                fontSize: 10.5,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        );
       },
     );
   }

@@ -4,8 +4,6 @@ class CustomTextField extends StatefulWidget {
   final String label;
   final bool obscureText;
   final TextEditingController controller;
-  final Color borderColor;
-  final double labelFontSize;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
 
@@ -13,9 +11,7 @@ class CustomTextField extends StatefulWidget {
     super.key,
     required this.label,
     required this.controller,
-    this.obscureText = false,  //عشان نشوف هل هنحط الزرار نفسه ولالا
-    this.borderColor = const Color(0xFF7F167F),
-    this.labelFontSize = 18,
+    this.obscureText = false,
     this.validator,
     this.keyboardType,
   });
@@ -25,42 +21,46 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  late bool obscure; //للايكون نفسها عشان نعملها set state وتخفي الباسوورد ولا يظهر
+  late bool obscure;
 
   @override
   void initState() {
     super.initState();
     obscure = widget.obscureText;
-    //لو كان الزرار ظاهر ب true يعني الباسوورد هيكون مخفي
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return TextFormField(
       validator: widget.validator,
       controller: widget.controller,
       obscureText: obscure,
+      keyboardType: widget.keyboardType,
+      style: TextStyle(
+        color: colorScheme.primary,
+      ),
       decoration: InputDecoration(
         labelText: widget.label,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         labelStyle: TextStyle(
           fontSize: 14,
-          color: widget.borderColor,
+          color: colorScheme.primary,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: widget.borderColor),
+          borderSide: BorderSide(color: colorScheme.primary),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: widget.borderColor),
-
+          borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
-        suffixIcon: widget.obscureText ?
-        IconButton(
+        suffixIcon: widget.obscureText
+            ? IconButton(
           icon: Icon(
             obscure ? Icons.visibility_off : Icons.visibility,
-            color: widget.borderColor,
+            color: colorScheme.primary,
           ),
           onPressed: () {
             setState(() {

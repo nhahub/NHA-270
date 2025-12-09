@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'dart:typed_data';
-
-
 
 class PopUpSave extends StatefulWidget {
   final Future<void> Function(String title) onSave;
-  const PopUpSave({super.key, required this.onSave,});
+
+  const PopUpSave({
+    super.key,
+    required this.onSave,
+  });
 
   @override
   State<PopUpSave> createState() => _PopUpSaveState();
@@ -21,76 +22,104 @@ class _PopUpSaveState extends State<PopUpSave> {
     super.dispose();
   }
 
+  Future<void> _handleSave(BuildContext context) async {
+    if (!formKey.currentState!.validate()) return;
+
+    final text = title.text.trim();
+    if (text.isEmpty) return;
+
+    await widget.onSave(text);
+
+    if (!mounted) return;
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme   = Theme.of(context).textTheme;
+
     return AlertDialog(
-      actions: [
-        Row(
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (formKey.currentState!.validate()) {
-                    await widget.onSave(title.text);
-                  }
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xFF7F167F)),
-                ),
-                child: Text("Save",
-                    style: TextStyle(
-                        color: Colors.white
-                    )
-                ),
-              ),
-            ),
-            SizedBox(width: 10),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(color: Color(0xFF7F167F)),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
+      backgroundColor: colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
       title: Text(
         "Save your project",
-        style: TextStyle(color: Color(0xFF7F167F), fontSize: 18),
+        style: textTheme.titleMedium?.copyWith(
+          color: colorScheme.primary,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
       ),
       content: Form(
         key: formKey,
         child: TextFormField(
           controller: title,
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            if (value == null || value.trim().isEmpty) {
               return "Please enter a name";
             }
             return null;
           },
           decoration: InputDecoration(
+            labelText: "Project name",
+            labelStyle: TextStyle(
+              color: colorScheme.primary.withOpacity(0.8),
+            ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Color(0xFF7F167F)),
+              borderSide: BorderSide(color: colorScheme.primary),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Color(0xFF7F167F)),
+              borderSide: BorderSide(color: colorScheme.primary.withOpacity(0.7)),
             ),
-            hintText: "Enter a name ",
+            hintText: "Enter a name",
             hintStyle: TextStyle(
               fontSize: 14,
-              color: Color(0xFF7F167F).withOpacity(0.5),
+              color: colorScheme.primary.withOpacity(0.5),
             ),
           ),
         ),
       ),
+      actionsPadding: const EdgeInsets.only(bottom: 12, left: 12, right: 12),
+      actions: [
+        Row(
+          children: [
+            // Save
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => _handleSave(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: colorScheme.primary,
+                  foregroundColor: colorScheme.onPrimary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text("Save"),
+              ),
+            ),
+            const SizedBox(width: 10),
+            // Cancel
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: colorScheme.surface,
+                  foregroundColor: colorScheme.primary,
+                  side: BorderSide(color: colorScheme.primary, width: 1.5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text("Cancel"),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

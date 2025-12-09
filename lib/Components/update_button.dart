@@ -6,6 +6,8 @@ class UpdateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: onPressed,
@@ -13,18 +15,29 @@ class UpdateButton extends StatelessWidget {
         alignment: Alignment.center,
         height: 50,
         width: 350,
-        decoration: const BoxDecoration(
-          color: Color(0xFF7F167F),
-          borderRadius: BorderRadius.all(
-            Radius.circular(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF6A2FEA),
+                Color(0xFFFF8AE2),
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFF6A2FEA).withOpacity(0.4),
+                blurRadius: 16,
+                spreadRadius: 0,
+              ),
+            ],
           ),
-        ),
-        child: const Padding(
-          padding: EdgeInsets.all(10.0),
+
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
           child: Text(
             "Update",
             style: TextStyle(
-              color: Colors.white,
+              color: colorScheme.onPrimary,  // 🔥 نص واضح حسب الثيم
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),

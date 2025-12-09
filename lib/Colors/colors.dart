@@ -1,37 +1,38 @@
 import 'package:flutter/material.dart';
+
 final ColorScheme HueColorScheme = ColorScheme(
   brightness: Brightness.light,
 
-  // ⭐ Primary – Soft Purple Tech
-  primary: Color(0xFF6A2FEA),
+  // ⭐ Primary – Neon Purple matching lines in background
+  primary: const Color(0xFF7F2BFF),
   onPrimary: Colors.white,
-  primaryContainer: Color(0xFFE8DDFF),
-  onPrimaryContainer: Color(0xFF25005D),
+  primaryContainer: const Color(0xFFEADDFF),
+  onPrimaryContainer: const Color(0xFF24005A),
 
-  // ⭐ Secondary – Light Tech Purple
-  secondary: Color(0xFF8A5CFF),
-  onSecondary: Colors.white,
-  secondaryContainer: Color(0xFFE8DDFF),
-  onSecondaryContainer: Color(0xFF2F0063),
+  // ⭐ Secondary – Glow Pink (اللون اللي شبه الخطوط الرفيعة)
+  secondary: const Color(0xFFFF5CF4),
+  onSecondary: const Color(0xFF320017),
+  secondaryContainer: const Color(0xFFFFD6FA),
+  onSecondaryContainer: const Color(0xFF400020),
 
-  // ⭐ Tertiary – AI Glow Pink
-  tertiary: Color(0xFFFF8AE2),
+  // ⭐ Tertiary – Soft Tech Blue (للchips والkeywords)
+  tertiary: const Color(0xFF7BAEFF),
   onTertiary: Colors.white,
-  tertiaryContainer: Color(0xFFFFCFF4),
-  onTertiaryContainer: Color(0xFF4F0035),
+  tertiaryContainer: const Color(0xFFE0EDFF),
+  onTertiaryContainer: const Color(0xFF00254A),
 
   // ⭐ Error
-  error: Color(0xFFFF4C4C),
+  error: const Color(0xFFFF4C4C),
   onError: Colors.white,
 
-  // ⭐ Background / Surface
-  background: Color(0xFFF8F6FF),
-  onBackground: Color(0xFF1A0D33),
+  // ⭐ Background / Surface (فاتح يناسب شاشات الأبلكيشن العادية)
+  background: const Color(0xFFF6F3FF),
+  onBackground: const Color(0xFF130B2E),
 
   surface: Colors.white,
-  onSurface: Color(0xFF1A0D33),
+  onSurface: const Color(0xFF130B2E),
 
   // ⭐ Outline / Shadow
-  outline: Color(0xFFC9B8FF),
-  shadow: Color(0xFF1A0D33),
+  outline: const Color(0xFFC2B5FF),
+  shadow: const Color(0xFF14092B),
 );

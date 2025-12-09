@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import '../Colors/gradient_text.dart';
 import '../Components/result_body.dart';
 import '../Bloc/floorplan/floorplan_bloc.dart';
 import '../Bloc/floorplan/floorplan_state.dart';
@@ -31,20 +32,22 @@ class AIresult extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      // كان: Color(0xFFFFDDF2)
       backgroundColor: colorScheme.background,
 
       appBar: AppBar(
-        // كان: Color(0xFFFFDDF2)
         backgroundColor: colorScheme.surface,
         elevation: 0,
-        title: Text(
-          "AI Result",
-          style: textTheme.titleLarge?.copyWith(
-            // كان: Color(0xFF7F167F)
-            color: colorScheme.primary,
-            fontWeight: FontWeight.bold,
+        title:GradientText(
+          text: "AI Result",
+          style: textTheme.titleLarge!.copyWith(
             fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          gradient: const LinearGradient(
+            colors: [
+              Color(0xFF6A2FEA), // Primary Purple
+              Color(0xFFFF8AE2), // AI Pink
+            ],
           ),
         ),
         centerTitle: true,

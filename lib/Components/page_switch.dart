@@ -32,48 +32,45 @@ class _TopSegmentedSwitchState extends State<TopSegmentedSwitch> {
   @override
   Widget build(BuildContext context) {
     const double height = 50;
-
-    // 🟣 نجيب الألوان من الثيم بدل ما نسبّت HEX
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme   = Theme.of(context).textTheme;
 
     return SizedBox(
       height: height,
       child: Stack(
         children: [
-          // الـ Track اللي ورا
+          // الخلفية (Track)
           Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Container(
               decoration: BoxDecoration(
-                // كان: Color(0xFFFF08FF).withOpacity(0.26),
                 color: colorScheme.primary.withOpacity(0.14),
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
           ),
 
-          // الزرار المتحرك (اللي بيغير بين Customize / Design)
+          // الزرار المتحرك
           AnimatedAlign(
             duration: const Duration(milliseconds: 220),
             curve: Curves.easeOut,
             alignment:
             _index == 0 ? Alignment.centerLeft : Alignment.centerRight,
             child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 6.0, bottom: 6, left: 20, right: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 6,
+              ),
               child: FractionallySizedBox(
-                widthFactor:
-                0.5, // عشان ياخد نص العرض تقريبًا (segment لكل اختيار)
+                widthFactor: 0.5,
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    // كان: Color(0xFF9700A3),
                     color: colorScheme.primary,
                     boxShadow: [
                       BoxShadow(
                         blurRadius: 8,
                         offset: const Offset(0, 4),
-                        // كان: Colors.black26
                         color: colorScheme.shadow.withOpacity(0.25),
                       ),
                     ],
@@ -83,10 +80,9 @@ class _TopSegmentedSwitchState extends State<TopSegmentedSwitch> {
             ),
           ),
 
-          // النصوص + الـ InkWell
+          // النصوص + InkWell
           Row(
             children: [
-              // Customize
               Expanded(
                 child: InkWell(
                   borderRadius: BorderRadius.circular(24),
@@ -94,21 +90,17 @@ class _TopSegmentedSwitchState extends State<TopSegmentedSwitch> {
                   child: Center(
                     child: Text(
                       'Customize',
-                      style: TextStyle(
+                      style: textTheme.labelLarge?.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: _index == 0
-                        // كان: Colors.white
                             ? colorScheme.onPrimary
-                        // كان: Color(0xFF9700A3)
                             : colorScheme.primary,
                       ),
                     ),
                   ),
                 ),
               ),
-
-              // Design
               Expanded(
                 child: InkWell(
                   borderRadius: BorderRadius.circular(24),
@@ -116,7 +108,7 @@ class _TopSegmentedSwitchState extends State<TopSegmentedSwitch> {
                   child: Center(
                     child: Text(
                       'Design',
-                      style: TextStyle(
+                      style: textTheme.labelLarge?.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: _index == 1
