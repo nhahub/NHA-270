@@ -227,7 +227,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           "Log in",
                           style: textTheme.bodySmall?.copyWith(
                             // كان: Color(0xFFCB1C8D)
-                            color: colorScheme.tertiary,
+                            color: colorScheme.secondary,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
